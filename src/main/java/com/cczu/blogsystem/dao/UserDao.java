@@ -57,13 +57,13 @@ public class UserDao {
         User user = new User();
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from t_user where userName = ? and passWord = ?";
+            String sql = "select * from user where username = ? and password = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, userName);
             ps.setString(2, passWord);
             rs = ps.executeQuery();
             if (rs.next()) {
-                user.setUserId(rs.getInt("userId"));
+                user.setUserId(rs.getInt("userid"));
                 user.setPhone(rs.getString("phone"));
                 user.setUserName(userName);
                 user.setPassWord(passWord);
