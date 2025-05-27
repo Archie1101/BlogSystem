@@ -52,7 +52,7 @@ public class LoginController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Register.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // 当前窗口
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("注册");
 
