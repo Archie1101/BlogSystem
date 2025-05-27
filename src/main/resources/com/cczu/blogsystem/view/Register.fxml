@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.RegisterController">
+
+    <Label layoutX="172.0" layoutY="102.0" text="用户名:" />
+    <TextField fx:id="usernameField" layoutX="240.0" layoutY="89.0" prefHeight="40.0" prefWidth="200" />
+
+    <Label layoutX="178.0" layoutY="158.0" text="密码:" />
+    <PasswordField fx:id="passwordField" layoutX="240.0" layoutY="145.0" prefHeight="40.0" prefWidth="200" />
+
+    <Label layoutX="166.0" layoutY="215.0" text="再次确认:" />
+    <PasswordField fx:id="passwordFieldConfirm" layoutX="240.0" layoutY="202.0" prefHeight="40.0" prefWidth="200" />
+
+    <Button layoutX="258.0" layoutY="290.0" onAction="#handleRegister" prefHeight="23.0" prefWidth="84.0" text="注册" />
+
+    <Hyperlink layoutX="494.0" layoutY="356.0" onAction="#handleGoToLogin" text="已有账户，登录" />
+
+</AnchorPane>

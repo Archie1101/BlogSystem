@@ -1,10 +1,16 @@
 package com.cczu.blogsystem.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import com.cczu.blogsystem.util.DBConnection;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,9 +26,6 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        // TODO: 这里写登录逻辑，细节你自己补充
-
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -40,6 +43,20 @@ public class LoginController {
                 System.out.println("密码：" + passwordField.getText());
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleGoToRegister(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Register.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // 当前窗口
+            stage.setScene(scene);
+            stage.setTitle("注册");
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
