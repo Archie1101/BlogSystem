@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cczu.blogsystem.controller.BlogMainController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.BlogMainController">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="文件">
+            <items>
+              <MenuItem mnemonicParsing="false" text="退出" />
+              <MenuItem mnemonicParsing="false" text="注销" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="博客">
+            <items>
+              <MenuItem mnemonicParsing="false" text="查询" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="帮助" />
+        </menus>
+      </MenuBar>
+      <ListView fx:id="BlogView" layoutY="27.0" prefHeight="773.0" prefWidth="1000.0" />
+   </children>
 </AnchorPane>
