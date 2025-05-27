@@ -17,7 +17,7 @@ public class UserDao {
         boolean result = false;
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from t_user where userName = ?";
+            String sql = "select * from user where userName = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, userName);
             rs = ps.executeQuery();
@@ -37,7 +37,7 @@ public class UserDao {
         if (!b) {
             try {
                 conn = DBConnection.getConnection();
-                String sql = "insert into t_user (userName,passWord,phone) values (?,?,?)";
+                String sql = "insert into user (username,password,phone) values (?,?,?)";
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, user.getUserName());
                 ps.setString(2, user.getPassWord());
@@ -108,7 +108,7 @@ public class UserDao {
             ps.executeUpdate();
             ps.close();
 
-            String deleteUserSql = "DELETE FROM t_user WHERE userId = ?";
+            String deleteUserSql = "DELETE FROM user WHERE userid = ?";
             ps = conn.prepareStatement(deleteUserSql);
             ps.setInt(1, user.getUserId());
             ps.executeUpdate();

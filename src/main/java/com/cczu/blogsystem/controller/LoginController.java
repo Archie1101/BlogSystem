@@ -30,9 +30,8 @@ public class LoginController {
     @FXML
     private void handleLogin(ActionEvent event) {
         UserDao userDao = new UserDao();
-        User user = userDao.login("linda92", "Pwd!2345");//测试账户
-        // User user = userDao.login(usernameField.getText(), passwordField.getText());
-
+//        User user = userDao.login("linda92", "Pwd!2345");//测试账户
+         User user = userDao.login(usernameField.getText(), passwordField.getText());
         if (user != null) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/BlogMain.fxml"));
@@ -49,7 +48,6 @@ public class LoginController {
             alert.setHeaderText("登录失败");
             alert.setContentText("用户名或密码错误，请重试。");
             alert.showAndWait();
-
         }
     }
 
