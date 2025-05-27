@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
@@ -30,15 +31,19 @@ public class LoginController {
     @FXML
     private void handleLogin(ActionEvent event) {
         UserDao userDao = new UserDao();
-//        User user = userDao.login("linda92", "Pwd!2345");//测试账户
-        User user = userDao.login(usernameField.getText(), passwordField.getText());
+        User user = userDao.login("linda92", "Pwd!2345");//测试账户
+//        User user = userDao.login(usernameField.getText(), passwordField.getText());
         if (user != null) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/BlogMain.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
+                BlogMainController controller = fxmlLoader.getController();
+                controller.setUser(user);
+
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.setTitle("博客系统");
+                stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
