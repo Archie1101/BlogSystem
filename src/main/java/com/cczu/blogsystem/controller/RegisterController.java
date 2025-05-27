@@ -30,7 +30,7 @@ public class RegisterController {
     private PasswordField passwordFieldConfirm;
 
     @FXML
-    private void handleRegister(ActionEvent event) {
+    private void handleRegister() {
         UserDao userDao = new UserDao();
         User user = new User(usernameField.getText(), passwordField.getText());
         if (passwordField.getText().equals(passwordFieldConfirm.getText())) {
