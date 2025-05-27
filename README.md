@@ -1,2 +1,7 @@
 # BlogSystem
 Java综合设计
+
+Javafx基本概念，每个界面是一个scene，各个scene放在stage上显示，
+每个stage同时只能显示一个scene，一般都是创建一个stage对象，
+然后在stage上显示不同的scene
+在登录和注册的界面，通过Hyperlink变量跳转。
