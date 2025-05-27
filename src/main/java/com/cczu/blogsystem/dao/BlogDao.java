@@ -1,7 +1,6 @@
 package com.cczu.blogsystem.dao;
 
 import com.cczu.blogsystem.pojo.Blog;
-import com.cczu.blogsystem.pojo.BlogType;
 import com.cczu.blogsystem.pojo.User;
 import com.cczu.blogsystem.util.DBConnection;
 
@@ -9,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlogDao {
     static Connection conn = null;
@@ -19,7 +20,7 @@ public class BlogDao {
         boolean result = false;
         try {
             conn = DBConnection.getConnection();
-            String sql = "insert into t_blog (blogTitle,blogContent,userId,typeId) values (?,?,?,?)";
+            String sql = "insert into Blog (blogTitle,blogContent,userId,typeId) values (?,?,?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, blog.getBlogTitle());
             ps.setString(2, blog.getBlogContent());
@@ -38,7 +39,7 @@ public class BlogDao {
     public void findAllBlogs() {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,t_user.userName userName from(select t_blog.*,blog_type.typeName from t_blog left join blog_type on t_blog.typeId = blog_type.typeId) t left join t_user on t.userId = t_user.userId;";
+            String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent Content,t.typeName,User.userName userName from(select Blog.*,BlogType.typeName from Blog left join BlogType on Blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             System.out.println("blogId\tblogTitle\tblogContent\ttypeName\tuserName");
@@ -55,44 +56,47 @@ public class BlogDao {
         }
     }
 
-    public void findMyBlogs(User user) {
+    public List<Blog> findMyBlogs(User user) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select blog.*,blog_type.typeName from (select * from t_blog where userId = ?)blog left join blog_type on blog.typeId = blog_type.typeId";
+            String sql = "select blog.*,BlogType.typeName from (select * from Blog where userId = ?)blog left join BlogType on blog.typeId = BlogType.typeId";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, user.getUserId());
             rs = ps.executeQuery();
-            System.out.println("我创建的博客如下：");
-            System.out.println("blogId\tblogTitle\tblogContent\ttypeName");
+            List<Blog> blogs = new ArrayList<Blog>();
             while (rs.next()) {
-                int blogId = rs.getInt("blogId");
-                String blogTitle = rs.getString("blogTitle");
-                String blogContent = rs.getString("blogContent");
-                String typeName = rs.getString("typeName");
-                System.out.println(blogId + "\t" + blogTitle + "\t" + blogContent + "\t" + typeName);
+                Blog blog = new Blog();
+                blog.setBlogId(rs.getInt("blogId"));
+                blog.setBlogTitle(rs.getString("blogTitle"));
+                blog.setBlogContent(rs.getString("blogContent"));
+                blog.setBlogContent(rs.getString("typeId"));
+                blog.setUser(user);
+                blogs.add(blog);
             }
+            return blogs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void deleteBlog(int blogId, User user) {
         try {
             String sql;
             conn = DBConnection.getConnection();
-            sql = "select * from t_blog where userId = ? and blogId = ?";
+            sql = "select * from Blog where userId = ? and blogId = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, String.valueOf(user.getUserId()));
             ps.setInt(2, blogId);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                sql = "delete from t_comment where blogId = ?";
+                sql = "delete from Comment where blogId = ?";
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, blogId);
                 ps.executeUpdate();
 
-                sql = "delete from t_blog where blogId = ?";
+                sql = "delete from Blog where blogId = ?";
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, blogId);
                 ps.executeUpdate();
@@ -108,7 +112,7 @@ public class BlogDao {
     public void updateBlog(Blog blog) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "update t_blog set blogTitle = ?,blogContent = ?,typeId = ? where userId = ? and blogId = ?";
+            String sql = "update Blog set blogTitle = ?,blogContent = ?,typeId = ? where userId = ? and blogId = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, blog.getBlogTitle());
             ps.setString(2, blog.getBlogContent());
@@ -129,7 +133,7 @@ public class BlogDao {
     public void findBlogById(int blogId) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,t_user.userName userName from(select blog.*,blog_type.typeName from (select * from t_blog where blogId = ?)blog left join blog_type on blog.typeId = blog_type.typeId) t left join t_user on t.userId = t_user.userId;";
+            String sql = "select t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,User.userName userName from(select blog.*,BlogType.typeName from (select * from Blog where blogId = ?)blog left join BlogType on blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, blogId);
             rs = ps.executeQuery();
@@ -149,7 +153,7 @@ public class BlogDao {
     public void findBlogByTitle(String blogTitle) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,t_user.userName userName from(select blog.*,blog_type.typeName from (select * from t_blog where blogTitle like ?)blog left join blog_type on blog.typeId = blog_type.typeId) t left join t_user on t.userId = t_user.userId;";
+            String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,User.userName userName from(select blog.*,BlogType.typeName from (select * from Blog where blogTitle like ?)blog left join BlogType on blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + blogTitle + "%");
             rs = ps.executeQuery();
@@ -171,7 +175,7 @@ public class BlogDao {
         boolean result = false;
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from t_blog where blogId = ?";
+            String sql = "select * from Blog where blogId = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, blogId);
             rs = ps.executeQuery();
@@ -187,7 +191,7 @@ public class BlogDao {
     public int findUserById(int blogId) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from t_blog where blogId = ?";
+            String sql = "select * from Blog where blogId = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, blogId);
             rs = ps.executeQuery();
