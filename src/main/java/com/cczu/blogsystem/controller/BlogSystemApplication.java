@@ -17,6 +17,7 @@ public class BlogSystemApplication extends Application {
         stage.setScene(scene);
         stage.setResizable(false);//禁止缩放
         stage.show();
+
     }
 
     public static void main(String[] args) {
