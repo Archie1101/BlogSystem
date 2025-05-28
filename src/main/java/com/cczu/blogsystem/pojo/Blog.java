@@ -1,13 +1,12 @@
 package com.cczu.blogsystem.pojo;
 
 public class Blog {
-    private int blogId; // 博客 id
-    private String blogTitle; // 博客标题
-    private String blogContent; // 博客内容
-    private User user; // 用户对象
-    private BlogType blogType; // 博客类型对象
+    private int blogId;
+    private String blogTitle;
+    private String blogContent;
+    private User user;
+    private BlogType blogType;
 
-    // 构造方法
     public Blog() {
     }
 
@@ -19,7 +18,6 @@ public class Blog {
         this.blogType = blogType;
     }
 
-    // 获取和设置博客属性
     public int getBlogId() {
         return blogId;
     }
@@ -44,7 +42,6 @@ public class Blog {
         this.blogContent = blogContent;
     }
 
-
     public User getUser() {
         return user;
     }
@@ -60,5 +57,4 @@ public class Blog {
     public void setBlogType(BlogType blogType) {
         this.blogType = blogType;
     }
-
 }
