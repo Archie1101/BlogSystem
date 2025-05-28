@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.cczu.blogsystem.controller.DelBLogController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox alignment="CENTER" spacing="20.0" layoutX="150.0" layoutY="100.0" prefWidth="300.0">
+        <Label text="请输入要删除的博客ID"/>
+        <TextField fx:id="blogIdField" promptText="博客ID"/>
+        <Button text="确认删除" onAction="#handleSubmit"/>
+        <Label fx:id="statusLabel"/>
+    </VBox>
+
+</AnchorPane>

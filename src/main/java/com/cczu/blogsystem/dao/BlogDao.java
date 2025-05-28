@@ -40,7 +40,7 @@ public class BlogDao {
     public List<Blog> findAllBlogs() {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent Content,t.typeName,User.userName userName from(select Blog.*,BlogType.typeName from Blog left join BlogType on Blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
+            String sql = "select t.blogId ,t.blogTitle ,t.blogContent ,t.typeName,User.userName  from(select Blog.*,BlogType.typeName from Blog left join BlogType on Blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             List<Blog> blogs = new ArrayList<>();
@@ -121,7 +121,7 @@ public class BlogDao {
         return null;
     }
 
-    public void deleteBlog(int blogId, User user) {
+    public boolean deleteBlog(int blogId, User user) {
         try {
             String sql;
             conn = DBConnection.getConnection();
@@ -141,14 +141,15 @@ public class BlogDao {
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, blogId);
                 ps.executeUpdate();
-                System.out.println("博客删除成功！");
-            } else {
-                System.out.println("博客删除失败！");
+                return true;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
+
 
     public void updateBlog(Blog blog) {
         try {

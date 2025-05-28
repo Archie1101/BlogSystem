@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.AddBlogController">
+
+    <Label layoutX="50.0" layoutY="40.0" text="标题："/>
+    <TextField fx:id="titleField" layoutX="130.0" layoutY="35.0" prefWidth="400.0" promptText="请输入博客标题"/>
+
+    <Label layoutX="50.0" layoutY="90.0" text="内容："/>
+    <TextArea fx:id="contentArea" layoutX="130.0" layoutY="85.0" prefHeight="150.0" prefWidth="400.0"
+              promptText="请输入博客内容"/>
+
+    <Label layoutX="50.0" layoutY="250.0" text="博客类型："/>
+    <TextField fx:id="typeField" layoutX="130.0" layoutY="245.0" prefWidth="400.0" promptText="请输入博客类型"/>
+
+    <Button layoutX="430.0" layoutY="300.0" onAction="#handleSubmit" prefWidth="100.0" text="提交"/>
+
+</AnchorPane>

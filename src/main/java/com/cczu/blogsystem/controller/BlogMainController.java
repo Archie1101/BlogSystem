@@ -40,13 +40,61 @@ public class BlogMainController {
     public void setUser(User user) {
         this.user = user;
         System.out.println(user.getUserName());
-        loadMyBlogs();
     }
 
     @FXML
     public void initialize() {
         searchComboBox.getItems().addAll("按ID搜索", "按标题搜索");
         searchComboBox.setValue("按ID搜索");
+        loadBlogs();
+    }
+
+    @FXML
+    public void loadBlogs() {
+        see();
+        BlogDao blogDao = new BlogDao();
+        ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findAllBlogs());
+        ListView.setItems(blogs);
+        ListView.setCellFactory(lv -> new ListCell<>() {
+            protected void updateItem(Blog blog, boolean empty) {
+                super.updateItem(blog, empty);
+                if (empty || blog == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    VBox vbox = new VBox();
+                    Label titleLabel = new Label("标题: " + blog.getBlogTitle());
+                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label contentLabel = new Label("内容: " + blog.getBlogContent());
+
+                    CommentDao commentDao = new CommentDao();
+                    List<Comment> comments = commentDao.findCommentById(blog.getBlogId());
+
+                    VBox commentBox = new VBox();
+                    commentBox.setSpacing(5);
+
+                    int count = 0;
+                    for (Comment comment : comments) {
+                        if (count >= 5) break;
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                        commentBox.getChildren().add(commentLabel);
+                        count++;
+                    }
+                    vbox.setSpacing(10);
+                    vbox.getChildren().addAll(titleLabel, idLabel, contentLabel, commentBox);
+                    setText(null);
+                    setGraphic(vbox);
+                }
+            }
+        });
+        ListView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // 双击打开评论界面
+                Blog selectedBlog = ListView.getSelectionModel().getSelectedItem();
+                if (selectedBlog != null) {
+                    showCommentsWindow(selectedBlog);
+                }
+            }
+        });
     }
 
     //查询自己的博客
@@ -102,6 +150,8 @@ public class BlogMainController {
     @FXML
     private void loadMyComments() {
         see();
+        delete.setVisible(false);
+        delete.setManaged(false);
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogsByComment(user));
         ListView.setItems(blogs);
@@ -229,13 +279,38 @@ public class BlogMainController {
         });
     }
 
+    @FXML
+    // 创建
+    private void handleAdd() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/AddBlog.fxml"));
+            Parent root = fxmlLoader.load();
+
+            AddBlogController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("创建博客");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleDelete() {
-        Blog selectedBlog = ListView.getSelectionModel().getSelectedItem();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("登录错误");
-        alert.setHeaderText("登录失败");
-        alert.setContentText("用户名或密码错误，请重试。");
-        alert.showAndWait();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/DelBlog.fxml"));
+            Parent root = fxmlLoader.load();
+            DelBLogController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("删除博客");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //登出

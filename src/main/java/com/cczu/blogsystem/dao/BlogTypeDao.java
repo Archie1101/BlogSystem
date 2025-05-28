@@ -13,7 +13,6 @@ public class BlogTypeDao {
     public BlogType findBlogType(String typeName) {
         try {
             conn = DBConnection.getConnection();
-
             String sql = "SELECT * FROM BlogType WHERE typeName = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, typeName);
@@ -29,7 +28,9 @@ public class BlogTypeDao {
             sql = "INSERT INTO BlogType(typeName) VALUES(?)";
             ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, typeName);
+            ps.executeUpdate();
 
+            //获取新插入博客类型的主键
             rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 int Id = rs.getInt(1);
