@@ -23,23 +23,23 @@ import java.util.List;
 
 public class BlogMainController {
     @FXML
-    private ListView<Blog> BlogView;   // 和FXML中对应
+    private ListView<Blog> ListView;   // 和FXML中对应
 
     private User user;
 
     public void setUser(User user) {
         this.user = user;
         System.out.println(user.getUserName());
-        loadBlogs();
+        loadMyBlogs();
     }
 
-    public void loadBlogs() {
+    //查询自己的博客
+    @FXML
+    public void loadMyBlogs() {
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogs(user));
-        BlogView.setItems(blogs);
-
-        BlogView.setCellFactory(lv -> new ListCell<Blog>() {
-            @Override
+        ListView.setItems(blogs);
+        ListView.setCellFactory(lv -> new ListCell<Blog>() {
             protected void updateItem(Blog blog, boolean empty) {
                 super.updateItem(blog, empty);
                 if (empty || blog == null) {
@@ -51,32 +51,29 @@ public class BlogMainController {
                     Label idLabel = new Label("ID: " + blog.getBlogId());
                     Label contentLabel = new Label("内容: " + blog.getBlogContent());
 
-                    // 获取评论数据
                     CommentDao commentDao = new CommentDao();
                     List<Comment> comments = commentDao.findCommentById(blog.getBlogId());
 
                     VBox commentBox = new VBox();
-                    commentBox.setSpacing(5); // 可选：增加评论间距
+                    commentBox.setSpacing(5);
+
                     int count = 0;
                     for (Comment comment : comments) {
                         if (count >= 5) break;
-                        Label commentLabel = new Label(comment.getUser().getUserName()+":" + comment.getCommentContent());
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
                         commentBox.getChildren().add(commentLabel);
                         count++;
                     }
-
-
-                    vbox.setSpacing(10); // 增加整体垂直间距
+                    vbox.setSpacing(10);
                     vbox.getChildren().addAll(titleLabel, idLabel, contentLabel, commentBox);
-
                     setText(null);
                     setGraphic(vbox);
                 }
             }
         });
-        BlogView.setOnMouseClicked(event -> {
+        ListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // 双击打开评论界面
-                Blog selectedBlog = BlogView.getSelectionModel().getSelectedItem();
+                Blog selectedBlog = ListView.getSelectionModel().getSelectedItem();
                 if (selectedBlog != null) {
                     showCommentsWindow(selectedBlog);
                 }
@@ -84,6 +81,47 @@ public class BlogMainController {
         });
     }
 
+    //查询自己的评论
+    @FXML
+    private void loadMyComments() {
+        BlogDao blogDao = new BlogDao();
+        ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogsByComment(user));
+        ListView.setItems(blogs);
+        ListView.setCellFactory(lv -> new ListCell<Blog>() {
+            protected void updateItem(Blog blog, boolean empty) {
+                super.updateItem(blog, empty);
+                if (empty || blog == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    VBox vbox = new VBox();
+                    Label titleLabel = new Label("标题: " + blog.getBlogTitle());
+                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label EditerLabel = new Label("作者: " + blog.getUser().getUserName());
+
+                    CommentDao commentDao = new CommentDao();
+                    List<Comment> comments = commentDao.findCommentById(blog.getBlogId());
+
+                    VBox commentBox = new VBox();
+                    commentBox.setSpacing(5);
+
+                    for (Comment comment : comments) {
+                        if (comment.getUser().getUserId() == (user.getUserId())) {
+                            Label commentLabel = new Label("我的评论: " + comment.getCommentContent());
+                            commentBox.getChildren().add(commentLabel);
+                        }
+                    }
+                    vbox.setSpacing(10);
+                    vbox.getChildren().addAll(titleLabel, idLabel, EditerLabel, commentBox);
+                    setText(null);
+                    setGraphic(vbox);
+                }
+            }
+        });
+    }
+
+    //评论展开
+    @FXML
     private void showCommentsWindow(Blog blog) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Comment.fxml"));
@@ -103,7 +141,6 @@ public class BlogMainController {
         }
     }
 
-
     //登出
     @FXML
     public void Logout(ActionEvent actionEvent) {
@@ -118,7 +155,6 @@ public class BlogMainController {
             e.printStackTrace();
         }
     }
-
 
     //注销
     public void Delete(ActionEvent actionEvent) {

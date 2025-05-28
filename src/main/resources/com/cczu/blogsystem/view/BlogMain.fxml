@@ -19,12 +19,15 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="博客">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="查询"/>
+                        <MenuItem onAction="#loadMyBlogs" mnemonicParsing="false" text="我的博客"/>
+                        <MenuItem mnemonicParsing="false" text="搜索博客"/>
+                        <MenuItem onAction="#loadMyComments" mnemonicParsing="false" text="我的评论"/>
+                        <MenuItem mnemonicParsing="false" text="搜索评论"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助"/>
             </menus>
         </MenuBar>
-        <ListView fx:id="BlogView" layoutY="27.0" prefHeight="773.0" prefWidth="1000.0"/>
+        <ListView fx:id="ListView" layoutY="26.0" prefHeight="773.0" prefWidth="1000.0"/>
     </children>
 </AnchorPane>
