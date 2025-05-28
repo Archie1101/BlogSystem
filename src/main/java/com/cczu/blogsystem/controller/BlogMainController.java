@@ -23,7 +23,13 @@ import java.util.List;
 
 public class BlogMainController {
     @FXML
-    private ListView<Blog> ListView;   // 和FXML中对应
+    private ListView<Blog> ListView;
+
+    @FXML
+    private ComboBox<String> searchComboBox;
+
+    @FXML
+    private TextField searchTextField;
 
     private User user;
 
@@ -31,6 +37,12 @@ public class BlogMainController {
         this.user = user;
         System.out.println(user.getUserName());
         loadMyBlogs();
+    }
+
+    @FXML
+    public void initialize() {
+        searchComboBox.getItems().addAll("按ID搜索", "按标题搜索");
+        searchComboBox.setValue("按ID搜索");
     }
 
     //查询自己的博客
@@ -97,7 +109,7 @@ public class BlogMainController {
                     VBox vbox = new VBox();
                     Label titleLabel = new Label("标题: " + blog.getBlogTitle());
                     Label idLabel = new Label("ID: " + blog.getBlogId());
-                    Label EditerLabel = new Label("作者: " + blog.getUser().getUserName());
+                    Label contentLabel = new Label("内容: " + blog.getBlogContent());
 
                     CommentDao commentDao = new CommentDao();
                     List<Comment> comments = commentDao.findCommentById(blog.getBlogId());
@@ -105,14 +117,15 @@ public class BlogMainController {
                     VBox commentBox = new VBox();
                     commentBox.setSpacing(5);
 
+                    int count = 0;
                     for (Comment comment : comments) {
-                        if (comment.getUser().getUserId() == (user.getUserId())) {
-                            Label commentLabel = new Label("我的评论: " + comment.getCommentContent());
-                            commentBox.getChildren().add(commentLabel);
-                        }
+                        if (count >= 5) break;
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                        commentBox.getChildren().add(commentLabel);
+                        count++;
                     }
                     vbox.setSpacing(10);
-                    vbox.getChildren().addAll(titleLabel, idLabel, EditerLabel, commentBox);
+                    vbox.getChildren().addAll(titleLabel, idLabel, contentLabel, commentBox);
                     setText(null);
                     setGraphic(vbox);
                 }
@@ -131,7 +144,7 @@ public class BlogMainController {
             controller.setBlog(blog);
 
             Stage stage = new Stage();
-            stage.setTitle(blog.getBlogTitle());
+            stage.setTitle(blog.getBlogTitle() + "的全部评论");
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -139,6 +152,55 @@ public class BlogMainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //搜索
+    @FXML
+    public void handleSearch(ActionEvent actionEvent) {
+        String type = searchComboBox.getValue();
+        String keyword = searchTextField.getText();
+        ObservableList<Blog> blogs;
+        BlogDao blogDao = new BlogDao();
+        if (type.equals("按ID搜索")) {
+            int blogId = Integer.parseInt(keyword);
+            blogs = FXCollections.observableArrayList(blogDao.findBlogById(blogId));
+        } else {
+            blogs = FXCollections.observableArrayList(blogDao.findBlogByTitle(keyword));
+        }
+        ListView.setItems(blogs);
+        ListView.setCellFactory(lv -> new ListCell<Blog>() {
+            protected void updateItem(Blog blog, boolean empty) {
+                super.updateItem(blog, empty);
+                if (empty || blog == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    VBox vbox = new VBox();
+                    Label titleLabel = new Label("标题: " + blog.getBlogTitle());
+                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label EditerLabel = new Label("作者: " + blog.getUser().getUserName());
+                    Label contentLabel = new Label("内容: " + blog.getBlogContent());
+
+                    CommentDao commentDao = new CommentDao();
+                    List<Comment> comments = commentDao.findCommentById(blog.getBlogId());
+
+                    VBox commentBox = new VBox();
+                    commentBox.setSpacing(5);
+
+                    int count = 0;
+                    for (Comment comment : comments) {
+                        if (count >= 5) break;
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                        commentBox.getChildren().add(commentLabel);
+                        count++;
+                    }
+                    vbox.setSpacing(10);
+                    vbox.getChildren().addAll(titleLabel, idLabel, EditerLabel, contentLabel, commentBox);
+                    setText(null);
+                    setGraphic(vbox);
+                }
+            }
+        });
     }
 
     //登出
@@ -167,5 +229,7 @@ public class BlogMainController {
         alert.showAndWait();
         Logout(actionEvent);
     }
+
+
 }
 
