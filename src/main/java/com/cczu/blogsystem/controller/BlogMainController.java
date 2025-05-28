@@ -56,7 +56,7 @@ public class BlogMainController {
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogs(user));
         ListView.setItems(blogs);
-        ListView.setCellFactory(lv -> new ListCell<Blog>() {
+        ListView.setCellFactory(lv -> new ListCell<>() {
             protected void updateItem(Blog blog, boolean empty) {
                 super.updateItem(blog, empty);
                 if (empty || blog == null) {
@@ -105,7 +105,7 @@ public class BlogMainController {
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogsByComment(user));
         ListView.setItems(blogs);
-        ListView.setCellFactory(lv -> new ListCell<Blog>() {
+        ListView.setCellFactory(lv -> new ListCell<>() {
             protected void updateItem(Blog blog, boolean empty) {
                 super.updateItem(blog, empty);
                 if (empty || blog == null) {
@@ -162,7 +162,7 @@ public class BlogMainController {
 
     //搜索
     @FXML
-    public void handleSearch(ActionEvent actionEvent) {
+    public void handleSearch() {
         unsee();
         String type = searchComboBox.getValue();
         String keyword = searchTextField.getText();
@@ -194,7 +194,7 @@ public class BlogMainController {
         }
 
         ListView.setItems(blogs);
-        ListView.setCellFactory(lv -> new ListCell<Blog>() {
+        ListView.setCellFactory(lv -> new ListCell<>() {
             protected void updateItem(Blog blog, boolean empty) {
                 super.updateItem(blog, empty);
                 if (empty || blog == null) {
