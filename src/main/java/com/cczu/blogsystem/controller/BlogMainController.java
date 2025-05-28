@@ -57,10 +57,14 @@ public class BlogMainController {
 
                     VBox commentBox = new VBox();
                     commentBox.setSpacing(5); // 可选：增加评论间距
+                    int count = 0;
                     for (Comment comment : comments) {
-                        Label commentLabel = new Label("评论: " + comment.getCommentContent());
+                        if (count >= 5) break;
+                        Label commentLabel = new Label(comment.getUser().getUserName()+":" + comment.getCommentContent());
                         commentBox.getChildren().add(commentLabel);
+                        count++;
                     }
+
 
                     vbox.setSpacing(10); // 增加整体垂直间距
                     vbox.getChildren().addAll(titleLabel, idLabel, contentLabel, commentBox);
@@ -70,7 +74,35 @@ public class BlogMainController {
                 }
             }
         });
+        BlogView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // 双击打开评论界面
+                Blog selectedBlog = BlogView.getSelectionModel().getSelectedItem();
+                if (selectedBlog != null) {
+                    showCommentsWindow(selectedBlog);
+                }
+            }
+        });
     }
+
+    private void showCommentsWindow(Blog blog) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Comment.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CommentController controller = fxmlLoader.getController();
+            controller.setBlog(blog);
+
+            Stage stage = new Stage();
+            stage.setTitle(blog.getBlogTitle());
+            stage.setScene(new Scene(root));
+            stage.show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //登出
     @FXML
