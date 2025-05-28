@@ -42,19 +42,17 @@ public class CommentDao {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, user.getUserId());
             rs = ps.executeQuery();
-            System.out.println("我发布的评论如下：");
-            System.out.println("blogId\tblogTitle\tblogContent\tcommentContent");
             while (rs.next()) {
                 int blogId = rs.getInt("blogId");
                 String blogTitle = rs.getString("blogTitle");
                 String blogContent = rs.getString("blogContent");
                 String commentContent = rs.getString("commentContent");
-                System.out.println(blogId + "\t" + blogTitle + "\t" + blogContent + "\t" + commentContent);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public List<Comment> findCommentById(int blogId) {
         List<Comment> comments = new ArrayList<>();

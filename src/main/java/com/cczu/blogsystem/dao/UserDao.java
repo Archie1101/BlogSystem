@@ -100,9 +100,9 @@ public class UserDao {
             User user = new User();
             if (rs.next()) {
                 user.setUserId(rs.getInt("userId"));
-                user.setPhone(rs.getString("userName"));
-//                user.setUserName(rs.getString("userName"));
-//                user.setPassWord(rs.getString("passWord"));
+                user.setPhone(rs.getString("phone"));
+                user.setUserName(rs.getString("userName"));
+                user.setPassWord(rs.getString("passWord"));
             }
             return user;
 

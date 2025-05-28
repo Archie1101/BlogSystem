@@ -90,6 +90,37 @@ public class BlogDao {
         return null;
     }
 
+    public List<Blog> findMyBlogsByComment(User user){
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "select b.*, bt.typeName from Blog b left join BlogType bt on b.typeId = bt.typeId where b.blogId in (select distinct c.blogId from Comment c where c.userId = ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, user.getUserId());
+            rs = ps.executeQuery();
+            List<Blog> blogs = new ArrayList<Blog>();
+            while (rs.next()) {
+                Blog blog = new Blog();
+                BlogType blogType = new BlogType();
+                UserDao userDao = new UserDao();
+
+                blog.setBlogId(rs.getInt("blogId"));
+                blog.setBlogTitle(rs.getString("blogTitle"));
+                blog.setBlogContent(rs.getString("blogContent"));
+                blog.setUser(userDao.findUserById(rs.getInt("userId")));
+
+                blogType.setTypeId(rs.getInt("typeId"));
+                blogType.setTypeName(rs.getString("typeName"));
+                blog.setBlogType(blogType);
+
+                blogs.add(blog);
+            }
+            return blogs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void deleteBlog(int blogId, User user) {
         try {
             String sql;
