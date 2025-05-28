@@ -1,6 +1,7 @@
 package com.cczu.blogsystem.dao;
 
 import com.cczu.blogsystem.pojo.Blog;
+import com.cczu.blogsystem.pojo.BlogType;
 import com.cczu.blogsystem.pojo.User;
 import com.cczu.blogsystem.util.DBConnection;
 
@@ -36,24 +37,27 @@ public class BlogDao {
         return result;
     }
 
-    public void findAllBlogs() {
+    public List<Blog> findAllBlogs() {
         try {
             conn = DBConnection.getConnection();
             String sql = "select t.blogId blogId,t.blogTitle blogTitle,t.blogContent Content,t.typeName,User.userName userName from(select Blog.*,BlogType.typeName from Blog left join BlogType on Blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
-            System.out.println("blogId\tblogTitle\tblogContent\ttypeName\tuserName");
+            List<Blog> blogs = new ArrayList<Blog>();
             while (rs.next()) {
-                int blogId = rs.getInt("blogId");
-                String blogTitle = rs.getString("blogTitle");
-                String blogContent = rs.getString("blogContent");
-                String typeName = rs.getString("typeName");
-                String userName = rs.getString("userName");
-                System.out.println(blogId + "\t" + blogTitle + "\t" + blogContent + "\t" + typeName + "\t" + userName);
+                Blog blog = new Blog();
+                blog.setBlogId(rs.getInt("blogId"));
+                blog.setBlogTitle(rs.getString("blogTitle"));
+                blog.setBlogContent(rs.getString("blogContent"));
+                blog.setBlogContent(rs.getString("typeName"));
+                blog.setBlogContent(rs.getString("userName"));
+                blogs.add(blog);
             }
+            return blogs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public List<Blog> findMyBlogs(User user) {
@@ -66,11 +70,17 @@ public class BlogDao {
             List<Blog> blogs = new ArrayList<Blog>();
             while (rs.next()) {
                 Blog blog = new Blog();
+                BlogType blogType = new BlogType();
+
                 blog.setBlogId(rs.getInt("blogId"));
                 blog.setBlogTitle(rs.getString("blogTitle"));
                 blog.setBlogContent(rs.getString("blogContent"));
-                blog.setBlogContent(rs.getString("typeId"));
                 blog.setUser(user);
+
+                blogType.setTypeId(rs.getInt("typeId"));
+                blogType.setTypeName(rs.getString("typeName"));
+                blog.setBlogType(blogType);
+
                 blogs.add(blog);
             }
             return blogs;
@@ -130,25 +140,40 @@ public class BlogDao {
         }
     }
 
-    public void findBlogById(int blogId) {
+    public Blog findBlogById(int blogId) {
+        Blog blog = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "select t.blogTitle blogTitle,t.blogContent blogContent,t.typeName,User.userName userName from(select blog.*,BlogType.typeName from (select * from Blog where blogId = ?)blog left join BlogType on blog.typeId = BlogType.typeId) t left join User on t.userId = User.userId;";
+            String sql = "SELECT t.blogTitle, t.blogContent, t.typeName, User.userName " +
+                    "FROM (SELECT blog.*, BlogType.typeName " +
+                    "      FROM Blog LEFT JOIN BlogType ON blog.typeId = BlogType.typeId " +
+                    "      WHERE blog.blogId = ?) t " +
+                    "LEFT JOIN User ON t.userId = User.userId;";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, blogId);
             rs = ps.executeQuery();
-            System.out.println("blogId\tblogTitle\tblogContent\ttypeName\tuserName");
-            while (rs.next()) {
-                String blogTitle = rs.getString("blogTitle");
-                String blogContent = rs.getString("blogContent");
-                String typeName = rs.getString("typeName");
-                String userName = rs.getString("userName");
-                System.out.println(blogId + "\t" + blogTitle + "\t" + blogContent + "\t" + typeName + "\t" + userName);
+
+            if (rs.next()) {
+                blog = new Blog();
+                blog.setBlogId(blogId);//博客Id
+                blog.setBlogTitle(rs.getString("blogTitle"));//博客标题
+                blog.setBlogContent(rs.getString("blogContent"));//博客内容
+
+                UserDao userDao = new UserDao();
+                User user = userDao.findUserByName(rs.getString("userName"));//用户
+                blog.setUser(user);
+
+                BlogTypeDao blogTypeDao = new BlogTypeDao();
+                BlogType blogType = blogTypeDao.findBlogType(rs.getString("typeName"));//博客类型
+                blog.setBlogType(blogType);
+                return blog;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
+
 
     public void findBlogByTitle(String blogTitle) {
         try {

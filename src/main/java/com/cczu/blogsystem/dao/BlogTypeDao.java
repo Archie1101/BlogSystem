@@ -16,14 +16,14 @@ public class BlogTypeDao {
     public BlogType findBlogType(String typeName) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from blog_type where typeName=?";
+            String sql = "select * from BlogType where typeName=?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, typeName);
             rs = ps.executeQuery();
             if (rs.next()) {
                 BlogType blogType = new BlogType();
-                blogType.setTypeId(rs.getInt("type_id"));
-                blogType.setTypeName(rs.getString("type_name"));
+                blogType.setTypeId(rs.getInt("typeId"));
+                blogType.setTypeName(rs.getString("typeName"));
                 return blogType;
             }
         } catch (SQLException e) {

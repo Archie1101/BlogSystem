@@ -17,7 +17,7 @@ public class UserDao {
         boolean result = false;
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from user where userName = ?";
+            String sql = "select * from User where userName = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, userName);
             rs = ps.executeQuery();
@@ -57,7 +57,7 @@ public class UserDao {
         User user = new User();
         try {
             conn = DBConnection.getConnection();
-            String sql = "select * from user where username = ? and password = ?";
+            String sql = "select * from User where userName = ? and passWord = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, userName);
             ps.setString(2, passWord);
@@ -108,7 +108,7 @@ public class UserDao {
             ps.executeUpdate();
             ps.close();
 
-            String deleteUserSql = "DELETE FROM user WHERE userid = ?";
+            String deleteUserSql = "DELETE FROM User WHERE userId = ?";
             ps = conn.prepareStatement(deleteUserSql);
             ps.setInt(1, user.getUserId());
             ps.executeUpdate();
@@ -134,4 +134,49 @@ public class UserDao {
             }
         }
     }
+
+    public User findUserById(Integer userId) {
+
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "select * from User where userId = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            User user = new User();
+            if (rs.next()) {
+                user.setUserId(rs.getInt("userId"));
+                user.setPhone(rs.getString("userName"));
+//                user.setUserName(rs.getString("userName"));
+//                user.setPassWord(rs.getString("passWord"));
+            }
+            return user;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User findUserByName(String userName) {
+        User user = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT * FROM User WHERE userName = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getInt("userId"));
+                user.setUserName(rs.getString("userName"));
+                user.setPassWord(rs.getString("passWord"));
+                user.setPhone(rs.getString("phone"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
 }
