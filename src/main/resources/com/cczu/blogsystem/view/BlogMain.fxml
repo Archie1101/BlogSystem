@@ -6,24 +6,25 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.BlogMainController">
-   <children>
-      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="文件">
-            <items>
-              <MenuItem mnemonicParsing="false" text="退出" />
-              <MenuItem mnemonicParsing="false" text="注销" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="博客">
-            <items>
-              <MenuItem mnemonicParsing="false" text="查询" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="帮助" />
-        </menus>
-      </MenuBar>
-      <ListView fx:id="BlogView" layoutY="27.0" prefHeight="773.0" prefWidth="1000.0" />
-   </children>
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.BlogMainController">
+    <children>
+        <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="文件">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#Logout" text="退出"/>
+                        <MenuItem mnemonicParsing="false" onAction="#Delete" text="注销"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="博客">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="查询"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="帮助"/>
+            </menus>
+        </MenuBar>
+        <ListView fx:id="BlogView" layoutY="27.0" prefHeight="773.0" prefWidth="1000.0"/>
+    </children>
 </AnchorPane>

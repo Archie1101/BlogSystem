@@ -2,18 +2,23 @@ package com.cczu.blogsystem.controller;
 
 import com.cczu.blogsystem.dao.BlogDao;
 import com.cczu.blogsystem.dao.CommentDao;
+import com.cczu.blogsystem.dao.UserDao;
 import com.cczu.blogsystem.pojo.Blog;
 import com.cczu.blogsystem.pojo.Comment;
 import com.cczu.blogsystem.pojo.User;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BlogMainController {
@@ -24,7 +29,7 @@ public class BlogMainController {
 
     public void setUser(User user) {
         this.user = user;
-        System.out.println("收到用户：" + user.getUserName());
+        System.out.println(user.getUserName());
         loadBlogs();
     }
 
@@ -67,5 +72,32 @@ public class BlogMainController {
         });
     }
 
+    //登出
+    @FXML
+    public void Logout(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Login.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+//            获取当前stage
+            Stage stage = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getOwnerWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //注销
+    public void Delete(ActionEvent actionEvent) {
+        UserDao userDao = new UserDao();
+        userDao.deleteUser(user);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("注销提示");
+        alert.setHeaderText("注销成功");
+        alert.setContentText("将返回登录界面");
+        alert.showAndWait();
+        Logout(actionEvent);
+    }
 }
 
