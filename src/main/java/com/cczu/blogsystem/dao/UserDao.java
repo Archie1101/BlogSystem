@@ -76,62 +76,16 @@ public class UserDao {
     }
 
     public void deleteUser(User user) {
-        Connection conn = null;
-        PreparedStatement ps = null;
+//        已经在数据库中添加触发器，删除用户前自动删除博客和评论数据
         try {
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
-            String deleteCommentsSql = "DELETE FROM t_comment WHERE userId = ?";
-            ps = conn.prepareStatement(deleteCommentsSql);
-            ps.setInt(1, user.getUserId());
-            ps.executeUpdate();
-            ps.close();
-
-            String findBlogIdsSql = "SELECT blogId FROM t_blog WHERE userId = ?";
-            ps = conn.prepareStatement(findBlogIdsSql);
-            ps.setInt(1, user.getUserId());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int blogId = rs.getInt("blogId");
-                String deleteBlogCommentsSql = "DELETE FROM t_comment WHERE blogId = ?";
-                PreparedStatement ps2 = conn.prepareStatement(deleteBlogCommentsSql);
-                ps2.setInt(1, blogId);
-                ps2.executeUpdate();
-                ps2.close();
-            }
-            rs.close();
-            ps.close();
-
-            String deleteBlogsSql = "DELETE FROM t_blog WHERE userId = ?";
-            ps = conn.prepareStatement(deleteBlogsSql);
-            ps.setInt(1, user.getUserId());
-            ps.executeUpdate();
-            ps.close();
-
+            Connection conn = DBConnection.getConnection();
             String deleteUserSql = "DELETE FROM User WHERE userId = ?";
-            ps = conn.prepareStatement(deleteUserSql);
+            PreparedStatement ps = conn.prepareStatement(deleteUserSql);
             ps.setInt(1, user.getUserId());
             ps.executeUpdate();
             ps.close();
-
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        } finally {
-            try {
-                if (ps != null) ps.close();
-                if (conn != null) conn.setAutoCommit(true);
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
