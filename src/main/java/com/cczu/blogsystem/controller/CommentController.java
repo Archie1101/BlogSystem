@@ -1,11 +1,9 @@
 package com.cczu.blogsystem.controller;
 
-import com.cczu.blogsystem.dao.UserDao;
 import com.cczu.blogsystem.pojo.Blog;
 import com.cczu.blogsystem.pojo.Comment;
 import com.cczu.blogsystem.dao.CommentDao;
 
-import com.cczu.blogsystem.pojo.User;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
