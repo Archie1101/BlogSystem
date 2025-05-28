@@ -35,12 +35,13 @@
         <Button layoutX="515.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="23.0"
                 prefWidth="132.0" text="查询"/>
         <TextField fx:id="searchTextField" layoutX="353.0" layoutY="27.0" prefHeight="23.0" prefWidth="294.0"/>
-        <Button fx:id="modify" layoutX="661.0" layoutY="50.0" mnemonicParsing="false" prefHeight="23.0"
+        <Button fx:id="modify" layoutX="661.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUpdate"
+                prefHeight="23.0"
                 prefWidth="132.0" text="修改"/>
         <Button fx:id="delete" layoutX="661.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleDelete"
                 prefHeight="23.0"
                 prefWidth="132.0" text="删除"/>
-        <Button onAction="#handleAdd" fx:id="add" layoutX="515.0" layoutY="76.0" mnemonicParsing="false"
+        <Button fx:id="add" layoutX="515.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleAdd"
                 prefHeight="23.0" prefWidth="132.0" text="创建"/>
     </children>
 </AnchorPane>

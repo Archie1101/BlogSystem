@@ -21,8 +21,6 @@ public class AddBlogController {
     private User user;
     public void setUser(User user) {
         this.user = user;
-        System.out.println(user.getUserName());
-
     }
 
     @FXML

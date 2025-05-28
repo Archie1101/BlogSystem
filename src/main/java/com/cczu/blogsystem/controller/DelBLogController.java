@@ -37,9 +37,18 @@ public class DelBLogController {
         try {
             int blogId = Integer.parseInt(blogIdText.trim());
             BlogDao blogDao = new BlogDao();
-            boolean flag = blogDao.deleteBlog(blogId, user);
-
             Alert alert;
+
+            if (!blogDao.checkBlogById(blogId)) {  // 改为判断博客不存在
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("删除提示");
+                alert.setHeaderText("删除失败");
+                alert.setContentText("博客不存在！");
+                alert.showAndWait();
+                return;
+            }
+
+            boolean flag = blogDao.deleteBlog(blogId, user);
             if (flag) {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("删除提示");
@@ -49,19 +58,16 @@ public class DelBLogController {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("删除提示");
                 alert.setHeaderText("删除失败");
-                alert.setContentText("无法删除，博客不存在或不属于您！");
+                alert.setContentText("无法删除，不属于您！");
             }
             alert.showAndWait();
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("输入异常");
-            alert.setHeaderText("搜索失败");
+            alert.setHeaderText("删除失败");
             alert.setContentText("请输入有效的ID");
             alert.showAndWait();
         }
-
     }
-
-
 }

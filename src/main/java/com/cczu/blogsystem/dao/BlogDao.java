@@ -150,8 +150,7 @@ public class BlogDao {
         return false;
     }
 
-
-    public void updateBlog(Blog blog) {
+    public boolean updateBlog(Blog blog) {
         try {
             conn = DBConnection.getConnection();
             String sql = "update Blog set blogTitle = ?,blogContent = ?,typeId = ? where userId = ? and blogId = ?";
@@ -162,14 +161,11 @@ public class BlogDao {
             ps.setInt(4, blog.getUser().getUserId());
             ps.setInt(5, blog.getBlogId());
             int i = ps.executeUpdate();
-            if (i == 1) {
-                System.out.println("博客修改成功！");
-            } else {
-                System.out.println("博客修改失败！");
-            }
+            return i == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public Blog findBlogById(int blogId) {
@@ -240,7 +236,6 @@ public class BlogDao {
     }
 
     public boolean checkBlogById(int blogId) {
-        boolean result = false;
         try {
             conn = DBConnection.getConnection();
             String sql = "select * from Blog where blogId = ?";
@@ -248,12 +243,12 @@ public class BlogDao {
             ps.setInt(1, blogId);
             rs = ps.executeQuery();
             if (rs.next()) {
-                result = true;
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return false;
     }
 
     public int findUserById(int blogId) {

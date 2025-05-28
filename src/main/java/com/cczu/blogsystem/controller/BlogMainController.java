@@ -313,6 +313,22 @@ public class BlogMainController {
         }
     }
 
+    @FXML
+    private void handleUpdate() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/UpdateBlog.fxml"));
+            Parent root = fxmlLoader.load();
+            UpdateBlogController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("删除博客");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //登出
     @FXML
     public void Logout(ActionEvent actionEvent) {
