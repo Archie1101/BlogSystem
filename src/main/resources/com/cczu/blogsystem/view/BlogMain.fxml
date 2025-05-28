@@ -9,31 +9,33 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.BlogMainController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cczu.blogsystem.controller.BlogMainController">
     <children>
         <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
             <menus>
                 <Menu mnemonicParsing="false" text="文件">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#Logout" text="退出"/>
-                        <MenuItem mnemonicParsing="false" onAction="#Delete" text="注销"/>
+                        <MenuItem mnemonicParsing="false" onAction="#Logout" text="退出" />
+                        <MenuItem mnemonicParsing="false" onAction="#Delete" text="注销" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="博客">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadMyBlogs" text="我的博客"/>
-                        <MenuItem mnemonicParsing="false" text="搜索博客"/>
-                        <MenuItem mnemonicParsing="false" onAction="#loadMyComments" text="我的评论"/>
-                        <MenuItem mnemonicParsing="false" text="搜索评论"/>
+                        <MenuItem mnemonicParsing="false" onAction="#loadMyBlogs" text="我的博客" />
+                        <MenuItem mnemonicParsing="false" text="搜索博客" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadMyComments" text="我的评论" />
+                        <MenuItem mnemonicParsing="false" text="搜索评论" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="帮助"/>
+                <Menu mnemonicParsing="false" text="帮助" />
             </menus>
         </MenuBar>
-        <ListView fx:id="ListView" layoutY="142.0" prefHeight="657.0" prefWidth="1000.0"/>
-        <ComboBox fx:id="searchComboBox" layoutX="353.0" layoutY="50.0" prefHeight="23.0" prefWidth="161.0"/>
-        <Button onAction="#handleSearch" layoutX="515.0" layoutY="50.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="132.0" text="查询"/>
-        <TextField fx:id="searchTextField" layoutX="353.0" layoutY="27.0" prefHeight="23.0" prefWidth="294.0"/>
+        <ListView fx:id="ListView" layoutY="114.0" prefHeight="685.0" prefWidth="1000.0" />
+        <ComboBox fx:id="searchComboBox" layoutX="353.0" layoutY="50.0" prefHeight="23.0" prefWidth="161.0" />
+        <Button layoutX="515.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="23.0" prefWidth="132.0" text="查询" />
+        <TextField fx:id="searchTextField" layoutX="353.0" layoutY="27.0" prefHeight="23.0" prefWidth="294.0" />
+      <Button fx:id="modify" layoutX="661.0" layoutY="50.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="132.0" text="修改" />
+      <Button fx:id="delete" layoutX="661.0" layoutY="76.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="132.0" text="删除" />
+      <Button fx:id="add" layoutX="515.0" layoutY="76.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="132.0" text="添加" />
     </children>
 </AnchorPane>

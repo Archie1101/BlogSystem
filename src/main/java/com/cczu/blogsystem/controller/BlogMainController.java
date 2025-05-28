@@ -24,10 +24,14 @@ import java.util.List;
 public class BlogMainController {
     @FXML
     private ListView<Blog> ListView;
-
+    @FXML
+    private Button modify;
+    @FXML
+    private Button delete;
+    @FXML
+    private Button add;
     @FXML
     private ComboBox<String> searchComboBox;
-
     @FXML
     private TextField searchTextField;
 
@@ -48,6 +52,7 @@ public class BlogMainController {
     //查询自己的博客
     @FXML
     public void loadMyBlogs() {
+        see();
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogs(user));
         ListView.setItems(blogs);
@@ -96,6 +101,7 @@ public class BlogMainController {
     //查询自己的评论
     @FXML
     private void loadMyComments() {
+        see();
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogsByComment(user));
         ListView.setItems(blogs);
@@ -157,16 +163,36 @@ public class BlogMainController {
     //搜索
     @FXML
     public void handleSearch(ActionEvent actionEvent) {
+        unsee();
         String type = searchComboBox.getValue();
         String keyword = searchTextField.getText();
+        //判断输入是否为空
         ObservableList<Blog> blogs;
         BlogDao blogDao = new BlogDao();
         if (type.equals("按ID搜索")) {
-            int blogId = Integer.parseInt(keyword);
-            blogs = FXCollections.observableArrayList(blogDao.findBlogById(blogId));
+            if (keyword.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("输入异常");
+                alert.setHeaderText("搜索失败");
+                alert.setContentText("请输入搜索内容");
+                alert.showAndWait();
+                return;
+            }
+            try {
+                int blogId = Integer.parseInt(keyword);
+                blogs = FXCollections.observableArrayList(blogDao.findBlogById(blogId));
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("输入异常");
+                alert.setHeaderText("搜索失败");
+                alert.setContentText("请输入有效的ID");
+                alert.showAndWait();
+                return;
+            }
         } else {
             blogs = FXCollections.observableArrayList(blogDao.findBlogByTitle(keyword));
         }
+
         ListView.setItems(blogs);
         ListView.setCellFactory(lv -> new ListCell<Blog>() {
             protected void updateItem(Blog blog, boolean empty) {
@@ -203,6 +229,15 @@ public class BlogMainController {
         });
     }
 
+    private void handleDelete() {
+        Blog selectedBlog = ListView.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("登录错误");
+        alert.setHeaderText("登录失败");
+        alert.setContentText("用户名或密码错误，请重试。");
+        alert.showAndWait();
+    }
+
     //登出
     @FXML
     public void Logout(ActionEvent actionEvent) {
@@ -219,6 +254,7 @@ public class BlogMainController {
     }
 
     //注销
+    @FXML
     public void Delete(ActionEvent actionEvent) {
         UserDao userDao = new UserDao();
         userDao.deleteUser(user);
@@ -230,6 +266,24 @@ public class BlogMainController {
         Logout(actionEvent);
     }
 
+    @FXML
+    public void see() {
+        modify.setVisible(true);
+        modify.setManaged(true);
+        delete.setVisible(true);
+        delete.setManaged(true);
+        add.setVisible(true);
+        add.setManaged(true);
+    }
 
+    @FXML
+    public void unsee() {
+        modify.setVisible(false);
+        modify.setManaged(false);
+        delete.setVisible(false);
+        delete.setManaged(false);
+        add.setVisible(false);
+        add.setManaged(false);
+    }
 }
 
