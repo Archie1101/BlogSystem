@@ -14,7 +14,7 @@ public class CommentDao {
     static PreparedStatement ps = null;
     static ResultSet rs = null;
 
-    public void addComment(Comment comment) {
+    public boolean addComment(Comment comment) {
         try {
             conn = DBConnection.getConnection();
             String sql = "insert into Comment (commentContent,blogId,createTime,userId) values (?,?,?,?)";
@@ -25,19 +25,18 @@ public class CommentDao {
             ps.setInt(4, comment.getUser().getUserId());
             int i = ps.executeUpdate();
             if (i == 1) {
-                System.out.println("评论发布成功！");
-            } else {
-                System.out.println("评论发布失败！");
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public void findMyComments(User user) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "select Blog.blogId blogId,Blog.blogTitle blogTitle, blog.blogContent blogContent,comment.commentContent " +
+            String sql = "select Blog.blogId,Blog.blogTitle, blog.blogContent ,comment.commentContent " +
                     "from (select * from Comment where userId = ?)comment left join  blog on comment.blogId =  blog.blogId";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, user.getUserId());

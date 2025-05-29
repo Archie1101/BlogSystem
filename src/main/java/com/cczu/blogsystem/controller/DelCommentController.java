@@ -1,6 +1,5 @@
 package com.cczu.blogsystem.controller;
 
-import com.cczu.blogsystem.dao.BlogDao;
 import com.cczu.blogsystem.dao.CommentDao;
 import com.cczu.blogsystem.pojo.User;
 
