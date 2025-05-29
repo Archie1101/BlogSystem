@@ -88,23 +88,44 @@ public class CommentDao {
         return comments;
     }
 
-
-    public boolean deleteComment(int commentId, int userId, int createUserId) {
+    public boolean checkComment(int commentId) {
         try {
             conn = DBConnection.getConnection();
-            String sql = "delete from  comment where commentId = ? and (userId = ? or ? = ?)";
+            String sql = "SELECT * FROM comment WHERE commentId = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, commentId);
-            ps.setInt(2, userId);
-            ps.setInt(3, createUserId);
-            ps.setInt(4, userId);
-            int i = ps.executeUpdate();
-            if (i > 0) {
-                return true;
-            }
+            rs = ps.executeQuery();
+            return rs.next();  // 如果查到结果说明评论存在
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+
+    public boolean deleteComment(int commentId, int userId) {
+        try {
+            conn = DBConnection.getConnection();
+            String checkSql = "SELECT * FROM comment WHERE commentId = ? AND userId = ?";
+            ps = conn.prepareStatement(checkSql);
+            ps.setInt(1, commentId);
+            ps.setInt(2, userId);
+            rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                return false;
+            }
+
+            String deleteSql = "DELETE FROM comment WHERE commentId = ?";
+            ps = conn.prepareStatement(deleteSql);
+            ps.setInt(1, commentId);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
