@@ -334,10 +334,10 @@ public class BlogMainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/AddComment.fxml"));
             Parent root = fxmlLoader.load();
 
-            DelCommentController controller = fxmlLoader.getController();
+            AddCommentController controller = fxmlLoader.getController();
             controller.setUser(user);
             Stage stage = new Stage();
-            stage.setTitle("删除评论");
+            stage.setTitle("发布评论");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -352,10 +352,10 @@ public class BlogMainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/DelComment.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddCommentController controller = fxmlLoader.getController();
+            DelCommentController controller = fxmlLoader.getController();
             controller.setUser(user);
             Stage stage = new Stage();
-            stage.setTitle("发布评论");
+            stage.setTitle("删除评论");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
