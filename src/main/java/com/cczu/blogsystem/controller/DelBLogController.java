@@ -1,7 +1,6 @@
 package com.cczu.blogsystem.controller;
 
 import com.cczu.blogsystem.dao.BlogDao;
-import com.cczu.blogsystem.pojo.Blog;
 import com.cczu.blogsystem.pojo.User;
 
 import javafx.fxml.FXML;

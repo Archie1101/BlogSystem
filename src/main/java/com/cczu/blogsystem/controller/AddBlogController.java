@@ -4,7 +4,6 @@ import com.cczu.blogsystem.dao.BlogDao;
 import com.cczu.blogsystem.dao.BlogTypeDao;
 import com.cczu.blogsystem.pojo.Blog;
 import com.cczu.blogsystem.pojo.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -24,7 +23,7 @@ public class AddBlogController {
     }
 
     @FXML
-    private void handleSubmit(ActionEvent actionEvent) {
+    private void handleSubmit() {
         BlogDao blogDao = new BlogDao();
         BlogTypeDao blogTypeDao = new BlogTypeDao();
 
@@ -35,19 +34,19 @@ public class AddBlogController {
         blog.setBlogType(blogTypeDao.findBlogType(typeField.getText()));
 
         boolean flag = blogDao.addBlog(blog);
+        Alert alert;
         if (flag) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("创建提示");
             alert.setHeaderText("成功");
             alert.setContentText("创建博客成功");
-            alert.showAndWait();
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("创建提示");
             alert.setHeaderText("失败");
             alert.setContentText("创建博客失败");
-            alert.showAndWait();
         }
+        alert.showAndWait();
     }
 }

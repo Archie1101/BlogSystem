@@ -4,7 +4,6 @@ import com.cczu.blogsystem.dao.BlogDao;
 import com.cczu.blogsystem.dao.CommentDao;
 import com.cczu.blogsystem.pojo.Comment;
 import com.cczu.blogsystem.pojo.User;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -66,12 +65,19 @@ public class AddCommentController {
         comment.setDate(new java.sql.Timestamp(System.currentTimeMillis()));
         comment.setUser(user);
 
-        commentDao.addComment(comment);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("成功");
-        alert.setHeaderText(null);
-        alert.setContentText("评论添加成功！");
-        alert.showAndWait();
+        boolean flag = commentDao.addComment(comment);
+        if (flag) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("发布提示");
+            alert.setHeaderText(null);
+            alert.setContentText("评论发布成功！");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("发布提示");
+            alert.setHeaderText(null);
+            alert.setContentText("评论发布失败！");
+            alert.showAndWait();
+        }
     }
 }

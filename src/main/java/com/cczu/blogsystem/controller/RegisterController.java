@@ -42,7 +42,7 @@ public class RegisterController {
                 alert.showAndWait();
             } else {
                 if (userDao.register(user)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("注册成功");
                     alert.setHeaderText("注册成功");
                     alert.setContentText("账号注册成功");

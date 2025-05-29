@@ -71,7 +71,7 @@ public class BlogMainController {
                 } else {
                     VBox vbox = new VBox();
                     Label titleLabel = new Label("标题: " + blog.getBlogTitle());
-                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label idLabel = new Label("博客ID: " + blog.getBlogId());
                     Label contentLabel = new Label("内容: " + blog.getBlogContent());
 
                     CommentDao commentDao = new CommentDao();
@@ -83,7 +83,7 @@ public class BlogMainController {
                     int count = 0;
                     for (Comment comment : comments) {
                         if (count >= 5) break;
-                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent() + "——评论: ID" + comment.getCommentId());
                         commentBox.getChildren().add(commentLabel);
                         count++;
                     }
@@ -125,7 +125,7 @@ public class BlogMainController {
                 } else {
                     VBox vbox = new VBox();
                     Label titleLabel = new Label("标题: " + blog.getBlogTitle());
-                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label idLabel = new Label("博客ID: " + blog.getBlogId());
                     Label contentLabel = new Label("内容: " + blog.getBlogContent());
 
                     CommentDao commentDao = new CommentDao();
@@ -137,7 +137,7 @@ public class BlogMainController {
                     int count = 0;
                     for (Comment comment : comments) {
                         if (count >= 5) break;
-                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent() + "——评论: ID" + comment.getCommentId());
                         commentBox.getChildren().add(commentLabel);
                         count++;
                     }
@@ -178,7 +178,7 @@ public class BlogMainController {
                 } else {
                     VBox vbox = new VBox();
                     Label titleLabel = new Label("标题: " + blog.getBlogTitle());
-                    Label idLabel = new Label("ID: " + blog.getBlogId());
+                    Label idLabel = new Label("博客ID: " + blog.getBlogId());
                     Label contentLabel = new Label("内容: " + blog.getBlogContent());
 
                     CommentDao commentDao = new CommentDao();
@@ -190,7 +190,7 @@ public class BlogMainController {
 
                     for (Comment comment : comments) {
                         if (comment.getUser().getUserId() == user.getUserId()) {
-                            Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                            Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent() + "——评论: ID" + comment.getCommentId());
                             commentBox.getChildren().add(commentLabel);
                         }
 

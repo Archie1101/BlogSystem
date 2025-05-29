@@ -33,32 +33,12 @@ public class CommentDao {
         return false;
     }
 
-    public void findMyComments(User user) {
-        try {
-            conn = DBConnection.getConnection();
-            String sql = "select Blog.blogId,Blog.blogTitle, blog.blogContent ,comment.commentContent " +
-                    "from (select * from Comment where userId = ?)comment left join  blog on comment.blogId =  blog.blogId";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, user.getUserId());
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int blogId = rs.getInt("blogId");
-                String blogTitle = rs.getString("blogTitle");
-                String blogContent = rs.getString("blogContent");
-                String commentContent = rs.getString("commentContent");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public List<Comment> findCommentById(int blogId) {
         List<Comment> comments = new ArrayList<>();
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT t.blogId, t.blogTitle, t.blogContent, t.commentContent, user.userName " +
-                    "FROM (SELECT blog.blogId, blog.blogTitle, blog.blogContent, comment.commentContent, comment.userId " +
+            String sql = "SELECT t.blogId, t.blogTitle, t.blogContent, t.commentId,t.commentContent, user.userName " +
+                    "FROM (SELECT blog.blogId, blog.blogTitle, blog.blogContent, comment.commentId,comment.commentContent, comment.userId " +
                     "      FROM comment LEFT JOIN blog ON comment.blogId = blog.blogId " +
                     "      WHERE comment.blogId = ?) t " +
                     "LEFT JOIN user ON t.userId = user.userId";
@@ -67,7 +47,7 @@ public class CommentDao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Comment comment = new Comment();
-
+                comment.setCommentId(rs.getInt("commentId"));
                 comment.setCommentContent(rs.getString("commentContent"));//评论内容
 
                 BlogDao blogDao = new BlogDao();
@@ -100,7 +80,6 @@ public class CommentDao {
         }
         return false;
     }
-
 
     public boolean deleteComment(int commentId, int userId) {
         try {

@@ -251,19 +251,4 @@ public class BlogDao {
         return false;
     }
 
-    public int findUserById(int blogId) {
-        try {
-            conn = DBConnection.getConnection();
-            String sql = "select * from Blog where blogId = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, blogId);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("userId");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 }
