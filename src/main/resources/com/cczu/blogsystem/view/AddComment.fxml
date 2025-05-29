@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="300.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.cczu.blogsystem.controller.AddCommentController">
+
+    <!-- 博客ID -->
+    <Label layoutX="50.0" layoutY="40.0" text="博客ID："/>
+    <TextField fx:id="blogIdField" layoutX="130.0" layoutY="35.0"
+               prefWidth="400.0" promptText="请输入要评论的博客ID"/>
+
+    <!-- 评论内容 -->
+    <Label layoutX="50.0" layoutY="90.0" text="评论内容："/>
+    <TextArea fx:id="commentArea" layoutX="130.0" layoutY="85.0"
+              prefHeight="120.0" prefWidth="400.0" promptText="请输入评论内容"/>
+
+    <!-- 提交按钮 -->
+    <Button layoutX="430.0" layoutY="220.0" onAction="#handleSubmit"
+            prefWidth="100.0" text="提交评论"/>
+
+</AnchorPane>

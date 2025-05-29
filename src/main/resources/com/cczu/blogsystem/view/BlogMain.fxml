@@ -37,11 +37,17 @@
         <TextField fx:id="searchTextField" layoutX="353.0" layoutY="27.0" prefHeight="23.0" prefWidth="294.0"/>
         <Button fx:id="modify" layoutX="661.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUpdate"
                 prefHeight="23.0"
-                prefWidth="132.0" text="修改"/>
-        <Button fx:id="delete" layoutX="661.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleDelete"
+                prefWidth="132.0" text="修改博客"/>
+        <Button fx:id="deleteBlog" layoutX="661.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleDelBlog"
                 prefHeight="23.0"
-                prefWidth="132.0" text="删除"/>
-        <Button fx:id="add" layoutX="515.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleAdd"
-                prefHeight="23.0" prefWidth="132.0" text="创建"/>
+                prefWidth="132.0" text="删除博客"/>
+        <Button fx:id="deleteComment" layoutX="661.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleDelComment"
+                prefHeight="23.0"
+                prefWidth="132.0" text="删除评论"/>
+
+        <Button fx:id="addBlog" layoutX="515.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleAddBlog"
+                prefHeight="23.0" prefWidth="132.0" text="创建博客"/>
+        <Button fx:id="addComment" layoutX="515.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleAddComment"
+                prefHeight="23.0" prefWidth="132.0" text="发布评论"/>
     </children>
 </AnchorPane>

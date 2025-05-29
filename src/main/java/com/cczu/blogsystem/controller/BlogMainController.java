@@ -27,11 +27,17 @@ public class BlogMainController {
     @FXML
     private Button modify;
     @FXML
-    private Button delete;
+    private Button deleteBlog;
     @FXML
-    private Button add;
+    private Button deleteComment;
+    @FXML
+    private Button addBlog;
+    @FXML
+    private Button addComment;
+
     @FXML
     private ComboBox<String> searchComboBox;
+
     @FXML
     private TextField searchTextField;
 
@@ -51,7 +57,7 @@ public class BlogMainController {
 
     @FXML
     public void loadBlogs() {
-        see();
+        unsee();
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findAllBlogs());
         ListView.setItems(blogs);
@@ -100,7 +106,12 @@ public class BlogMainController {
     //查询自己的博客
     @FXML
     public void loadMyBlogs() {
-        see();
+        modify.setVisible(true);
+        modify.setManaged(true);
+        deleteBlog.setVisible(true);
+        deleteBlog.setManaged(true);
+        addBlog.setVisible(true);
+        addBlog.setManaged(true);
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogs(user));
         ListView.setItems(blogs);
@@ -149,9 +160,11 @@ public class BlogMainController {
     //查询自己的评论
     @FXML
     private void loadMyComments() {
-        see();
-        delete.setVisible(false);
-        delete.setManaged(false);
+        unsee();
+        deleteComment.setVisible(true);
+        deleteComment.setManaged(true);
+        addComment.setVisible(true);
+        addComment.setManaged(true);
         BlogDao blogDao = new BlogDao();
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogsByComment(user));
         ListView.setItems(blogs);
@@ -279,9 +292,9 @@ public class BlogMainController {
         });
     }
 
+    //创建博客
     @FXML
-    // 创建
-    private void handleAdd() {
+    private void handleAddBlog() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/AddBlog.fxml"));
             Parent root = fxmlLoader.load();
@@ -297,8 +310,9 @@ public class BlogMainController {
         }
     }
 
+    //删除博客
     @FXML
-    private void handleDelete() {
+    private void handleDelBlog() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/DelBlog.fxml"));
             Parent root = fxmlLoader.load();
@@ -306,6 +320,42 @@ public class BlogMainController {
             controller.setUser(user);
             Stage stage = new Stage();
             stage.setTitle("删除博客");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //发布评论
+    @FXML
+    public void handleAddComment() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/AddComment.fxml"));
+            Parent root = fxmlLoader.load();
+
+            DelCommentController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("删除评论");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //删除评论
+    @FXML
+    public void handleDelComment() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/DelComment.fxml"));
+            Parent root = fxmlLoader.load();
+
+            AddCommentController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("发布评论");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -321,7 +371,7 @@ public class BlogMainController {
             UpdateBlogController controller = fxmlLoader.getController();
             controller.setUser(user);
             Stage stage = new Stage();
-            stage.setTitle("删除博客");
+            stage.setTitle("修改博客");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -357,24 +407,21 @@ public class BlogMainController {
         Logout(actionEvent);
     }
 
-    @FXML
-    public void see() {
-        modify.setVisible(true);
-        modify.setManaged(true);
-        delete.setVisible(true);
-        delete.setManaged(true);
-        add.setVisible(true);
-        add.setManaged(true);
-    }
 
     @FXML
     public void unsee() {
         modify.setVisible(false);
         modify.setManaged(false);
-        delete.setVisible(false);
-        delete.setManaged(false);
-        add.setVisible(false);
-        add.setManaged(false);
+        deleteBlog.setVisible(false);
+        deleteBlog.setManaged(false);
+        deleteComment.setVisible(false);
+        deleteComment.setManaged(false);
+        addBlog.setVisible(false);
+        addBlog.setManaged(false);
+        addComment.setVisible(false);
+        addComment.setManaged(false);
     }
+
+
 }
 
