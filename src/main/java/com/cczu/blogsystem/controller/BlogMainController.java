@@ -55,6 +55,7 @@ public class BlogMainController {
         loadBlogs();
     }
 
+    //加载所有博客
     @FXML
     public void loadBlogs() {
         unsee();
@@ -186,12 +187,13 @@ public class BlogMainController {
                     VBox commentBox = new VBox();
                     commentBox.setSpacing(5);
 
-                    int count = 0;
+
                     for (Comment comment : comments) {
-                        if (count >= 5) break;
-                        Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
-                        commentBox.getChildren().add(commentLabel);
-                        count++;
+                        if (comment.getUser().getUserId() == user.getUserId()) {
+                            Label commentLabel = new Label(comment.getUser().getUserName() + ":" + comment.getCommentContent());
+                            commentBox.getChildren().add(commentLabel);
+                        }
+
                     }
                     vbox.setSpacing(10);
                     vbox.getChildren().addAll(titleLabel, idLabel, contentLabel, commentBox);
@@ -327,6 +329,23 @@ public class BlogMainController {
         }
     }
 
+    //修改博客
+    @FXML
+    private void handleUpdateBlog() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/UpdateBlog.fxml"));
+            Parent root = fxmlLoader.load();
+            UpdateBlogController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            Stage stage = new Stage();
+            stage.setTitle("修改博客");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //发布评论
     @FXML
     public void handleAddComment() {
@@ -363,22 +382,6 @@ public class BlogMainController {
         }
     }
 
-    @FXML
-    private void handleUpdate() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/UpdateBlog.fxml"));
-            Parent root = fxmlLoader.load();
-            UpdateBlogController controller = fxmlLoader.getController();
-            controller.setUser(user);
-            Stage stage = new Stage();
-            stage.setTitle("修改博客");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     //登出
     @FXML
     public void Logout(ActionEvent actionEvent) {
@@ -407,7 +410,6 @@ public class BlogMainController {
         Logout(actionEvent);
     }
 
-
     @FXML
     public void unsee() {
         modify.setVisible(false);
@@ -421,7 +423,4 @@ public class BlogMainController {
         addComment.setVisible(false);
         addComment.setManaged(false);
     }
-
-
 }
-

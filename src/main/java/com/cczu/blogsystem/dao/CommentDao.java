@@ -81,7 +81,6 @@ public class CommentDao {
                 comments.add(comment);
 
 
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +89,7 @@ public class CommentDao {
     }
 
 
-    public void deleteComment(int commentId, int userId, int createUserId) {
+    public boolean deleteComment(int commentId, int userId, int createUserId) {
         try {
             conn = DBConnection.getConnection();
             String sql = "delete from  comment where commentId = ? and (userId = ? or ? = ?)";
@@ -101,12 +100,11 @@ public class CommentDao {
             ps.setInt(4, userId);
             int i = ps.executeUpdate();
             if (i > 0) {
-                System.out.println("评论删除成功！");
-            } else {
-                System.out.println("评论删除失败！");
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }
