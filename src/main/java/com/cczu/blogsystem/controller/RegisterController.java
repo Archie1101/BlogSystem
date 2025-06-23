@@ -33,6 +33,15 @@ public class RegisterController {
     private void handleRegister() {
         UserDao userDao = new UserDao();
         User user = new User(usernameField.getText(), passwordField.getText());
+        if(usernameField.getText().isEmpty()||passwordField.getText().isEmpty()||passwordFieldConfirm.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("注册错误");
+            alert.setHeaderText("注册失败");
+            alert.setContentText("请输入账号密码！");
+            alert.showAndWait();
+            return ;
+        }
+
         if (passwordField.getText().equals(passwordFieldConfirm.getText())) {
             if (userDao.checkUser(user.getUserName())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

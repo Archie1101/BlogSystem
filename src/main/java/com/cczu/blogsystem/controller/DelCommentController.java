@@ -31,7 +31,6 @@ public class DelCommentController {
                 alert.showAndWait();
                 return;
             }
-
             //删除评论
             boolean deleted = commentDao.deleteComment(commentId,user.getUserId());
             Alert alert;

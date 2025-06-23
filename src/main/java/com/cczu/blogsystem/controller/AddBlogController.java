@@ -34,6 +34,7 @@ public class AddBlogController {
         blog.setBlogType(blogTypeDao.findBlogType(typeField.getText()));
 
         boolean flag = blogDao.addBlog(blog);
+
         Alert alert;
         if (flag) {
             alert = new Alert(Alert.AlertType.INFORMATION);

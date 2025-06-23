@@ -107,6 +107,7 @@ public class BlogMainController {
     //查询自己的博客
     @FXML
     public void loadMyBlogs() {
+        unsee();
         modify.setVisible(true);
         modify.setManaged(true);
         deleteBlog.setVisible(true);
@@ -114,8 +115,10 @@ public class BlogMainController {
         addBlog.setVisible(true);
         addBlog.setManaged(true);
         BlogDao blogDao = new BlogDao();
+        //构造ObList，ObList支持动态刷新,传入的List数据发生改变的时候ListView刷新显示
         ObservableList<Blog> blogs = FXCollections.observableArrayList(blogDao.findMyBlogs(user));
         ListView.setItems(blogs);
+        //工厂函数，lambda表达式，匿名类，继承，重写
         ListView.setCellFactory(lv -> new ListCell<>() {
             protected void updateItem(Blog blog, boolean empty) {
                 super.updateItem(blog, empty);
@@ -231,7 +234,7 @@ public class BlogMainController {
         unsee();
         String type = searchComboBox.getValue();
         String keyword = searchTextField.getText();
-        //判断输入是否为空
+
         ObservableList<Blog> blogs;
         BlogDao blogDao = new BlogDao();
         if (type.equals("按ID搜索")) {
@@ -388,8 +391,9 @@ public class BlogMainController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/cczu/blogsystem/view/Login.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-//            获取当前stage
+            //获取跳转当前scene前的scene所处的stage
             Stage stage = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getOwnerWindow();
+            stage.setTitle("博客系统");
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
